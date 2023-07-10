@@ -1,14 +1,13 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+package tasks;
+
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class HomeTask {
 
     public static void main(String[] args) {
-        String[] words = {"мама", "папа", "їж їжак желе"};
+        String[] words ={"мама", "тато", "їж їжак желе", "папа"};
         Set<Character> uniqueChars = findUniqueCharacters(words);
         System.out.println(uniqueChars);
     }
@@ -16,7 +15,7 @@ public class HomeTask {
     public static Set<Character> findUniqueCharacters(String[] words) {
         List<String> wordList = Arrays.asList(words);
         List<String> filteredWords = wordList.stream()
-                .filter(word -> countEvenOccurrences(word) >= 2)
+                .filter(word -> countEvenOccurrences(word) == 2)
                 .limit(2)
                 .collect(Collectors.toList());
 
