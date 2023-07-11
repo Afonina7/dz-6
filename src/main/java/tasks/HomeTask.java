@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class HomeTask {
 
     public static void main(String[] args) {
-        String[] words ={"мама", "тато", "їж їжак желе", "папа"};
+        String[] words ={"мама", "лалапапа", "тато", "їж їжак желе", "баба"};
         Set<Character> uniqueChars = findUniqueCharacters(words);
         System.out.println(uniqueChars);
     }
@@ -15,7 +15,7 @@ public class HomeTask {
     public static Set<Character> findUniqueCharacters(String[] words) {
         List<String> wordList = Arrays.asList(words);
         List<String> filteredWords = wordList.stream()
-                .filter(word -> countEvenOccurrences(word) == 2)
+                .filter(word -> countEvenOccurrences(word) >= 2)
                 .limit(2)
                 .collect(Collectors.toList());
 
@@ -30,9 +30,6 @@ public class HomeTask {
         Map<Character, Long> charCounts = word.chars()
                 .mapToObj(ch -> (char) ch)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-        return charCounts.values().stream()
-                .filter(count -> count % 2 == 0)
-                .count();
+        return charCounts.size();
     }
 }
