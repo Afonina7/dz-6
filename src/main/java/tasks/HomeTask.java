@@ -1,35 +1,54 @@
 package tasks;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class HomeTask {
 
     public static void main(String[] args) {
-        String[] words ={"мама", "лалапапа", "тато", "їж їжак желе", "баба"};
-        Set<Character> uniqueChars = findUniqueCharacters(words);
+        printEvenChars(new String[]{"мама", "лалапапа", "тато", "їж їжак желе", "івавіавіав", "папа"});
+    }
+
+    public static void printEvenChars(String[] words) {
+        List<String> evenWords = new ArrayList<>();
+        int counter = 0;
+        for (String word : words) {
+            Map<Character, Integer> charCount = countCharacters(word);
+            if (isEvenCountOfChars(charCount)) {
+                evenWords.add(word);
+                if (++counter == 2)
+                    break;
+            }
+        }
+        Set<Character> uniqueChars = getUniqueChars(evenWords);
         System.out.println(uniqueChars);
     }
 
-    public static Set<Character> findUniqueCharacters(String[] words) {
-        List<String> wordList = Arrays.asList(words);
-        List<String> filteredWords = wordList.stream()
-                .filter(word -> countEvenOccurrences(word) >= 2)
-                .limit(2)
-                .collect(Collectors.toList());
+    private static Map<Character, Integer> countCharacters(String word) {
+        char[] chars = word.toCharArray();
+        Map<Character, Integer> charCount = new HashMap<>();
 
-        Set<Character> uniqueChars = filteredWords.stream()
-                .flatMap(word -> word.chars().mapToObj(ch -> (char) ch))
-                .collect(Collectors.toSet());
+        for (char ch : chars) {
+            charCount.put(ch, charCount.getOrDefault(ch, 0) + 1);
+        }
+        return charCount;
+    }
 
+    private static Set<Character> getUniqueChars(List<String> list) {
+        Set<Character> uniqueChars = new HashSet<>();
+        for (String word : list) {
+            char[] chars = word.toCharArray();
+            for (char ch : chars)
+                uniqueChars.add(ch);
+        }
         return uniqueChars;
     }
 
-    public static long countEvenOccurrences(String word) {
-        Map<Character, Long> charCounts = word.chars()
-                .mapToObj(ch -> (char) ch)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        return charCounts.size();
+    private static boolean isEvenCountOfChars(Map<Character, Integer> charCount) {
+        boolean isEven = false;
+        for (Character ch : charCount.keySet()) {
+            isEven = charCount.get(ch) % 2 == 0;
+            if (!isEven) break;
+        }
+        return isEven;
     }
 }
